@@ -6,8 +6,6 @@ Aplicación móvil React Native de catálogo de Pokémon con carrito de compras,
 
 
 
----> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
-
 
 
 ## 📱 Características Principales## Step 1: Start Metro
