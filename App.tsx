@@ -1,45 +1,48 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
+ * Emtelco Pokemon Cart App
+ * Aplicación de catálogo de Pokémon con carrito de compras
+ * 
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import React, { useEffect } from 'react';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AppNavigator } from './src/presentation/navigation/AppNavigator';
+import { useSyncStore } from './src/presentation/stores/useSyncStore';
+import { NotificationService } from './src/infrastructure/services/NotificationService';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const initialize = useSyncStore(state => state.initialize);
+
+  useEffect(() => {
+    // Inicializar el servicio de sincronización y conectividad
+    initialize();
+
+    // Solicitar permisos de notificaciones
+    const requestNotificationPermissions = async () => {
+      const notificationService = NotificationService.getInstance();
+      const granted = await notificationService.requestPermissions();
+
+      if (granted) {
+        console.log('✅ Notificaciones habilitadas');
+      } else {
+        console.log('⚠️ Usuario rechazó permisos de notificaciones');
+      }
+    };
+
+    requestNotificationPermissions();
+  }, [initialize]);
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+      <NavigationContainer>
+        <StatusBar barStyle="light-content" backgroundColor="#3498DB" />
+        <AppNavigator />
+      </NavigationContainer>
     </SafeAreaProvider>
   );
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
