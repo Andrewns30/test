@@ -3,10 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSyncStore } from '../stores/useSyncStore';
 
-/**
- * Componente de indicador de conectividad
- * Muestra el estado de conexión a internet
- */
 export const ConnectivityIndicator: React.FC = () => {
     const isOnline = useSyncStore(state => state.isOnline);
     const isSyncing = useSyncStore(state => state.isSyncing);

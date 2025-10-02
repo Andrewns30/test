@@ -16,10 +16,6 @@ interface CartItemCardProps {
     onUpdateQuantity: (pokemonId: number, quantity: number) => void;
 }
 
-/**
- * Componente de item del carrito
- * Muestra un item del carrito con controles de cantidad
- */
 export const CartItemCard: React.FC<CartItemCardProps> = ({
     item,
     onRemove,

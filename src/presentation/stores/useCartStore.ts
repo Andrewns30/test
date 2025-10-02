@@ -6,18 +6,16 @@ import { HapticService } from '../../infrastructure/services/HapticService';
 import { NotificationService } from '../../infrastructure/services/NotificationService';
 
 interface CartState {
-    // Estado
+
     items: CartItem[];
     loading: boolean;
 
-    // Acciones
     loadCart: () => Promise<void>;
     addToCart: (pokemon: Pokemon) => Promise<void>;
     removeFromCart: (pokemonId: number) => Promise<void>;
     updateQuantity: (pokemonId: number, quantity: number) => Promise<void>;
     clearCart: () => Promise<void>;
 
-    // Computed
     getTotalItems: () => number;
     getTotalPrice: () => number;
     getPendingItemsCount: () => number;
@@ -26,10 +24,6 @@ interface CartState {
 const cartRepository = new CartRepository();
 const notificationService = NotificationService.getInstance();
 
-/**
- * Store del Carrito usando Zustand
- * Maneja el estado del carrito de compras con persistencia offline
- */
 export const useCartStore = create<CartState>((set, get) => ({
     items: [],
     loading: false,
@@ -48,14 +42,12 @@ export const useCartStore = create<CartState>((set, get) => ({
     addToCart: async (pokemon: Pokemon) => {
         const { items } = get();
 
-        // Verificar si el Pokémon ya está en el carrito
         const existingItem = items.find(item => item.pokemon.id === pokemon.id);
 
         let newItems: CartItem[];
         let newQuantity = 1;
 
         if (existingItem) {
-            // Incrementar cantidad
             newQuantity = existingItem.quantity + 1;
             newItems = items.map(item =>
                 item.pokemon.id === pokemon.id
@@ -63,7 +55,6 @@ export const useCartStore = create<CartState>((set, get) => ({
                     : item
             );
         } else {
-            // Agregar nuevo item
             const newItem: CartItem = {
                 pokemon,
                 quantity: 1,
@@ -76,10 +67,8 @@ export const useCartStore = create<CartState>((set, get) => ({
         set({ items: newItems });
         await cartRepository.saveCartItems(newItems);
 
-        // Feedback háptico
         HapticService.addToCart();
 
-        // Notificación Notifee
         await notificationService.showItemAddedNotification(
             pokemon.name,
             existingItem ? newQuantity : undefined
@@ -94,10 +83,8 @@ export const useCartStore = create<CartState>((set, get) => ({
         set({ items: newItems });
         await cartRepository.saveCartItems(newItems);
 
-        // Feedback háptico
         HapticService.removeFromCart();
 
-        // Notificación Notifee
         if (itemToRemove) {
             await notificationService.showItemRemovedNotification(itemToRemove.pokemon.name);
         }
@@ -120,7 +107,6 @@ export const useCartStore = create<CartState>((set, get) => ({
         set({ items: newItems });
         await cartRepository.saveCartItems(newItems);
 
-        // Feedback háptico suave al cambiar cantidad
         HapticService.quantityChange();
     },
 
@@ -131,10 +117,8 @@ export const useCartStore = create<CartState>((set, get) => ({
         set({ items: [] });
         await cartRepository.clearCart();
 
-        // Feedback háptico al vaciar carrito
         HapticService.removeFromCart();
 
-        // Notificación Notifee
         if (itemCount > 0) {
             await notificationService.showCartClearedNotification(itemCount);
         }

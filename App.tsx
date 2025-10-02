@@ -1,10 +1,3 @@
-/**
- * Emtelco Pokemon Cart App
- * Aplicación de catálogo de Pokémon con carrito de compras
- * 
- * @format
- */
-
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -17,10 +10,8 @@ function App() {
   const initialize = useSyncStore(state => state.initialize);
 
   useEffect(() => {
-    // Inicializar el servicio de sincronización y conectividad
     initialize();
 
-    // Solicitar permisos de notificaciones
     const requestNotificationPermissions = async () => {
       const notificationService = NotificationService.getInstance();
       const granted = await notificationService.requestPermissions();

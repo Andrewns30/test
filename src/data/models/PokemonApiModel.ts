@@ -1,6 +1,3 @@
-/**
- * Modelo de respuesta de la PokeAPI
- */
 export interface PokemonApiResponse {
     count: number;
     next: string | null;

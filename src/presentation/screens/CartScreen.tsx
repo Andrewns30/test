@@ -15,10 +15,6 @@ import { CartItemCard } from '../components/CartItemCard';
 import { ConnectivityIndicator } from '../components/ConnectivityIndicator';
 import { HapticService } from '../../infrastructure/services/HapticService';
 
-/**
- * Pantalla del Carrito de Compras
- * Muestra los items agregados y permite gestionar cantidades
- */
 export const CartScreen: React.FC = () => {
     const items = useCartStore(state => state.items);
     const loading = useCartStore(state => state.loading);
@@ -34,7 +30,6 @@ export const CartScreen: React.FC = () => {
 
     useEffect(() => {
         loadCart();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleClearCart = async () => {
@@ -42,7 +37,6 @@ export const CartScreen: React.FC = () => {
     };
 
     const handleCheckout = () => {
-        // Vibración de éxito antes de mostrar el alert
         HapticService.success();
 
         const totalItemsCount = totalItems;
@@ -55,7 +49,6 @@ export const CartScreen: React.FC = () => {
                 {
                     text: 'Aceptar',
                     onPress: async () => {
-                        // Vaciar carrito automáticamente después de confirmar
                         await clearCart();
                     },
                 },

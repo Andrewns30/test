@@ -1,10 +1,6 @@
 import notifee, { AndroidImportance, AuthorizationStatus } from '@notifee/react-native';
 import { Platform, PermissionsAndroid } from 'react-native';
 
-/**
- * Servicio de Notificaciones Locales
- * Maneja las notificaciones push locales en la aplicación usando Notifee
- */
 export class NotificationService {
     private static instance: NotificationService;
     private channelId = 'emtelco-channel';
@@ -20,9 +16,6 @@ export class NotificationService {
         return NotificationService.instance;
     }
 
-    /**
-     * Crea el canal de notificaciones para Android
-     */
     private async createChannel(): Promise<void> {
         await notifee.createChannel({
             id: this.channelId,
@@ -33,13 +26,8 @@ export class NotificationService {
         });
     }
 
-    /**
-     * Solicita permisos de notificaciones
-     * Debe llamarse al iniciar la app
-     */
     async requestPermissions(): Promise<boolean> {
         if (Platform.OS === 'android') {
-            // Android 13+ (API 33+) requiere permiso POST_NOTIFICATIONS
             if (Platform.Version >= 33) {
                 try {
                     const granted = await PermissionsAndroid.request(
@@ -65,18 +53,13 @@ export class NotificationService {
                     return false;
                 }
             }
-            // Android 12 y anteriores no requieren permiso en tiempo de ejecución
             return true;
         }
 
-        // iOS
         const settings = await notifee.requestPermission();
         return settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED;
     }
 
-    /**
-     * Muestra una notificación de sincronización exitosa
-     */
     async showSyncSuccessNotification(itemCount: number): Promise<void> {
         await notifee.displayNotification({
             title: '✅ Carrito Sincronizado',
@@ -95,9 +78,6 @@ export class NotificationService {
         });
     }
 
-    /**
-     * Muestra una notificación de item agregado al carrito
-     */
     async showItemAddedNotification(pokemonName: string, quantity?: number): Promise<void> {
         const body = quantity && quantity > 1
             ? `${pokemonName} agregado (${quantity} en carrito)`
@@ -117,9 +97,6 @@ export class NotificationService {
         });
     }
 
-    /**
-     * Muestra una notificación cuando se elimina un item del carrito
-     */
     async showItemRemovedNotification(pokemonName: string): Promise<void> {
         await notifee.displayNotification({
             title: '🗑️ Eliminado del Carrito',
@@ -135,9 +112,6 @@ export class NotificationService {
         });
     }
 
-    /**
-     * Muestra una notificación cuando se vacía el carrito
-     */
     async showCartClearedNotification(itemCount: number): Promise<void> {
         const body = itemCount === 1
             ? 'Se eliminó 1 item del carrito'
@@ -157,9 +131,6 @@ export class NotificationService {
         });
     }
 
-    /**
-     * Muestra una notificación cuando hay items pendientes de sincronizar
-     */
     async showPendingSyncNotification(itemCount: number): Promise<void> {
         await notifee.displayNotification({
             title: '🔄 Sincronización Pendiente',
@@ -174,9 +145,6 @@ export class NotificationService {
         });
     }
 
-    /**
-     * Cancela todas las notificaciones
-     */
     async cancelAllNotifications(): Promise<void> {
         await notifee.cancelAllNotifications();
     }

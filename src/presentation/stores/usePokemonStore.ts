@@ -4,14 +4,12 @@ import { PokemonRepository } from '../../data/repositories/PokemonRepositoryImpl
 import { PokemonStorageDataSource } from '../../data/datasources/PokemonStorageDataSource';
 
 interface PokemonState {
-    // Estado
     pokemon: Pokemon[];
     loading: boolean;
     error: string | null;
     hasMore: boolean;
     currentPage: number;
 
-    // Acciones
     fetchPokemon: (reset?: boolean) => Promise<void>;
     loadCachedPokemon: () => Promise<void>;
     reset: () => void;
@@ -21,10 +19,6 @@ const ITEMS_PER_PAGE = 20;
 const pokemonRepository = new PokemonRepository();
 const storageDataSource = new PokemonStorageDataSource();
 
-/**
- * Store de Pokémon usando Zustand
- * Maneja el estado de la lista de Pokémon con paginación y caché offline
- */
 export const usePokemonStore = create<PokemonState>((set, get) => ({
     pokemon: [],
     loading: false,
@@ -32,9 +26,6 @@ export const usePokemonStore = create<PokemonState>((set, get) => ({
     hasMore: true,
     currentPage: 0,
 
-    /**
-     * Carga Pokémon desde caché al inicializar (para modo offline)
-     */
     loadCachedPokemon: async () => {
         try {
             const cached = await storageDataSource.getPokemonList();

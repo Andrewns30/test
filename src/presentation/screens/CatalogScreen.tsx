@@ -13,10 +13,6 @@ import { PokemonCard } from '../components/PokemonCard';
 import { ConnectivityIndicator } from '../components/ConnectivityIndicator';
 import { Pokemon } from '../../domain/entities/Pokemon';
 
-/**
- * Pantalla del Catálogo de Pokémon
- * Lista paginada con scroll infinito y soporte offline
- */
 export const CatalogScreen: React.FC = () => {
     const pokemon = usePokemonStore(state => state.pokemon);
     const loading = usePokemonStore(state => state.loading);
@@ -27,10 +23,7 @@ export const CatalogScreen: React.FC = () => {
     const addToCart = useCartStore(state => state.addToCart);
 
     useEffect(() => {
-        // Inicializar datos: fetchPokemon manejará automáticamente
-        // el fallback a caché si no hay internet
         fetchPokemon(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleLoadMore = () => {

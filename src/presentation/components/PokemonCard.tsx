@@ -16,12 +16,8 @@ interface PokemonCardProps {
 }
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = (width - 48) / 2; // 2 columnas con padding
+const CARD_WIDTH = (width - 48) / 2;
 
-/**
- * Componente de tarjeta de Pokémon
- * Muestra la información del Pokémon y permite agregarlo al carrito
- */
 export const PokemonCard: React.FC<PokemonCardProps> = ({
     pokemon,
     onAddToCart,

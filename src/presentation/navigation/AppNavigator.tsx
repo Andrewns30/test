@@ -12,7 +12,6 @@ export type RootTabParamList = {
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
-// Componentes de iconos extraídos para evitar re-creación
 const CatalogIcon = ({ color, size }: { color: string; size: number }) => (
     <Icon name="list" size={size} color={color} />
 );
@@ -21,10 +20,6 @@ const CartIcon = ({ color, size }: { color: string; size: number }) => (
     <Icon name="cart" size={size} color={color} />
 );
 
-/**
- * Navegador principal de la aplicación
- * Pestañas inferiores para Catálogo y Carrito
- */
 export const AppNavigator: React.FC = () => {
     const getTotalItems = useCartStore(state => state.getTotalItems);
     const totalItems = getTotalItems();
