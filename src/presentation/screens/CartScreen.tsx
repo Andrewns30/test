@@ -30,7 +30,7 @@ export const CartScreen: React.FC = () => {
 
     useEffect(() => {
         loadCart();
-    }, []);
+    });
 
     const handleClearCart = async () => {
         await clearCart();

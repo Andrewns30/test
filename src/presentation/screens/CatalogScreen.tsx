@@ -24,7 +24,7 @@ export const CatalogScreen: React.FC = () => {
 
     useEffect(() => {
         fetchPokemon(true);
-    }, []);
+    });
 
     const handleLoadMore = () => {
         if (hasMore && !loading) {
